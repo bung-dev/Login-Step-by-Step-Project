@@ -15,8 +15,13 @@ public class MemberRepository {
     private final Map<Long,Member> store = new HashMap<>();
     private static long sequence = 0L;
 
-    public Member save(Member member){
+    public Member save(MemberRequest memberRequest){
+        Member member = new Member();
+        member.setLoginId(memberRequest.loginId());
+        member.setPassword(memberRequest.password());
+        member.setName(memberRequest.name());
         member.setId(++sequence);
+        log.info("member={}",member);
         store.put(member.getId(),member);
 
         return member;
