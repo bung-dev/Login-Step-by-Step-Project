@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/member")
 public class MemberController {
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public Member getMemberById(@PathVariable Long id) {
-        return memberRepository.findById(id);
+    public MemberResponse getMemberById(@RequestParam Long id) {
+        return memberService.getMemberById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Member CreateMember(@RequestBody @Valid MemberRequest request){
+    public MemberResponse CreateMember(@RequestBody @Valid MemberRequest request){
 
-        return memberRepository.save(request);
+        return memberService.createMember(request);
     }
 }
