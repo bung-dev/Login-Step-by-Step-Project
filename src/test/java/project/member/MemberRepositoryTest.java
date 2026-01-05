@@ -18,7 +18,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    void save(){
+    void saveAndFindById(){
         //given
         MemberRequest memberRequest = new MemberRequest("test1","test!","test1");
         //when
@@ -43,5 +43,19 @@ class MemberRepositoryTest {
         assertThat(all.size()).isEqualTo(2);
         assertThat(all.get(0).getName()).isEqualTo(memberRequest.name());
         assertThat(all.get(1).getName()).isEqualTo(memberRequestTwo.name());
+    }
+
+    @Test
+    void deleteByMemberId(){
+        //given
+        MemberRequest memberRequest = new MemberRequest("test1","test!","test1");
+
+        Member member = memberRepository.save(memberRequest);
+        //when
+        System.out.println(member.toString());
+        memberRepository.deleteMemberById(member.getId());
+
+        //then
+        assertThat(memberRepository.findById(member.getId())).isNull();
     }
 }
