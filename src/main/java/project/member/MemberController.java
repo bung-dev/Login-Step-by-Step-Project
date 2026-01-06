@@ -22,8 +22,13 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<MemberResponse> createMembers(@RequestBody @Valid MemberRequest request){
+    public ResponseEntity<MemberResponse> createMembers(@Valid MemberRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.createMember(request));
+    }
+
+    @PostMapping
+    public ResponseEntity<MemberResponse> loginMember(@RequestParam String loginId, @RequestParam String password){
+        return ResponseEntity.ok(memberService.login(loginId, password));
     }
 
     @GetMapping
