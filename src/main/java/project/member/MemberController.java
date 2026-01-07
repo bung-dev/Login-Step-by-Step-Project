@@ -66,6 +66,12 @@ public class MemberController {
 
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logoutMember(@CookieValue(name = "loginId",required = false) String loginId) {
+        ResponseCookie cookie = expireCookie(loginId);
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
+    }
+
     private static @NonNull ResponseCookie getResponseCookie(MemberResponse login) {
         return ResponseCookie.from("loginId", login.loginId())
                 .httpOnly(true)
@@ -73,6 +79,16 @@ public class MemberController {
                 .path("/")
                 .sameSite("Strict")
                 .maxAge(3600)
+                .build();
+    }
+
+    private static ResponseCookie expireCookie(String loginId){
+        return ResponseCookie.from("loginId",loginId)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(0)
                 .build();
     }
 }
