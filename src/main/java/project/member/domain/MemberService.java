@@ -33,7 +33,6 @@ public class MemberService {
         }
 
         return new MemberResponse(getMember.getLoginId(),
-                getMember.getPassword(),
                 getMember.getName());
     }
 
