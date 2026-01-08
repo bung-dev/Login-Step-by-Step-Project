@@ -1,6 +1,7 @@
-package project.member;
+package project.member.domain.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import project.member.domain.Member;
 
 public record MemberResponse(@NotEmpty String loginId,
                              @NotEmpty String password,

@@ -1,7 +1,6 @@
-package project.member;
+package project.member.web.controller;
 
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -13,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.member.domain.MemberService;
+import project.member.domain.dto.MemberRequest;
+import project.member.domain.dto.MemberResponse;
 
 import java.util.List;
 
@@ -45,8 +47,8 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<MemberResponse> loginMember(@RequestParam String loginId, @RequestParam String password){
+    @PostMapping("/login/cookie")
+    public ResponseEntity<MemberResponse> loginCookie(@RequestParam String loginId, @RequestParam String password){
         MemberResponse login = memberService.login(loginId, password);
         ResponseCookie cookie = getResponseCookie(login);
 

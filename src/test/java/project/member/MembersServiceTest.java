@@ -1,6 +1,10 @@
 package project.member;
 
 import org.junit.jupiter.api.Test;
+import project.member.domain.MemberRepository;
+import project.member.domain.MemberService;
+import project.member.domain.dto.MemberRequest;
+import project.member.domain.dto.MemberResponse;
 
 import java.util.List;
 

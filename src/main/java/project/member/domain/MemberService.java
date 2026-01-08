@@ -1,7 +1,9 @@
-package project.member;
+package project.member.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import project.member.domain.dto.MemberRequest;
+import project.member.domain.dto.MemberResponse;
 
 import java.util.List;
 

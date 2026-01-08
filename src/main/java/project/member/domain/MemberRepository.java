@@ -1,4 +1,4 @@
-package project.member;
+package project.member.domain;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
@@ -9,7 +9,7 @@ import java.util.*;
 @Repository
 public class MemberRepository {
 
-    private final Map<Long,Member> store = new HashMap<>();
+    private final Map<Long, Member> store = new HashMap<>();
     private static long sequence = 0L;
 
     public Member save(Member member){

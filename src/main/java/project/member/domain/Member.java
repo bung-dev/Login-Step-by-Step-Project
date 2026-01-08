@@ -1,4 +1,4 @@
-package project.member;
+package project.member.domain;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;

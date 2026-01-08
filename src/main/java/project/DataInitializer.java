@@ -5,8 +5,8 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import project.member.MemberRequest;
-import project.member.MemberService;
+import project.member.domain.dto.MemberRequest;
+import project.member.domain.MemberService;
 
 @Component
 @RequiredArgsConstructor
