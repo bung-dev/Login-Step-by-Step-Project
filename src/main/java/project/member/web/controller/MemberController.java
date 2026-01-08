@@ -56,7 +56,6 @@ public class MemberController {
         httpSession.setAttribute(LOGIN_MEMBER, loginId);
 
         return  ResponseEntity.ok().body(login);
-
     }
 
     @PostMapping("/logout")
