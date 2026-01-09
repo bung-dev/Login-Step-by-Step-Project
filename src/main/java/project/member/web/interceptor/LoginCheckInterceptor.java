@@ -8,6 +8,8 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import project.member.web.SessionConst;
+import project.member.web.exception.CustomException;
+import project.member.web.exception.ErrorCode;
 
 
 @Log4j2
@@ -20,9 +22,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
 
-            return false;
         }
         return true;
     }
