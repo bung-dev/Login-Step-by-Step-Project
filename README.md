@@ -1,5 +1,6 @@
 # login
-로그인 
+1. 쿠키 로그인 구현
+2. 세션 로그인 구현
 
 ## 📌 커밋 컨벤션
 
@@ -13,3 +14,22 @@
 | ✅ | **test** | 테스트 코드 추가 또는 수정 |
 | 🔧 | **chore** | 빌드, 패키지 설정 등 기능과 직접 관련 없는 작업 |
 
+
+### @Login , HandlerMethodArgumentResolver
+로그인 여부를 확인할 때 컨트롤러에서 직접 HttpSession을 조회하는 대신,
+HandlerMethodArgumentResolver를 활용해 @Login 커스텀 어노테이션으로
+로그인 정보를 주입받도록 구현했다
+
+<img width="774" height="152" alt="image" src="https://github.com/user-attachments/assets/44edb9ac-593f-4d46-80f0-ed20702f3f72" />
+HandlerMethodArgumentResolver를 구현한 LoginMemberArgumentResolver에는 supportsParameter 메서드가 있다
+
+단순 로그인 여부 확인은 세션에 저장된 DTO를 통해 처리했다
+매 요청마다 엔티티를 조회하지 않아도 되므로 성능상 이점있다고 생각했다
+하지만 회원 정보나 상태가 변경되거나 결제와 중요한 비즈니스 로직의 경우,
+세션의 DTO는 신뢰성을 잃을 수 있을 수 있다
+이럴 경우 어떻게 해야할까? 
+1. 최신 엔티티 조회
+2. 1+ DTO로 매핑후 세션에 저장
+3. 세션과 최신 엔티티를 비교후 다를 경우에만 수행
+
+어떤것이 더 나을까?
