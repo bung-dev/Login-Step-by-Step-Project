@@ -42,10 +42,7 @@ public class MemberService {
         return memberRepository.findByLoginId(loginId)
                 .filter(member -> member.getPassword().equals(password))
                 .map(MemberResponse::from)
-                .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 맞지 않습니다"));
-        // 예외 처리 로직 추가해야함
-        // 1. @ControllerAdvice 를 통해 전역 예외 처리 -> 로그인 실패 예외
-        // 2. httpStatus 코드 및 body 응답 추가
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_CREDENTIALS));
     }
 
     public List<MemberResponse> getAllMembers(){
