@@ -1,8 +1,8 @@
 package project.member;
 
 import org.junit.jupiter.api.Test;
-import project.member.domain.MemberRepository;
-import project.member.domain.MemberService;
+import project.member.repository.InMemoryMemberRepository;
+import project.member.service.MemberService;
 import project.member.domain.dto.MemberRequest;
 import project.member.domain.dto.MemberResponse;
 
@@ -12,9 +12,9 @@ import static org.assertj.core.api.Assertions.*;
 
 public class MembersServiceTest {
 
-    MemberRepository memberRepository = new MemberRepository();
+    InMemoryMemberRepository inMemoryMemberRepository = new InMemoryMemberRepository();
 
-    MemberService memberService = new MemberService(memberRepository);
+    MemberService memberService = new MemberService(inMemoryMemberRepository);
 
     @Test
     void createMemberAndGetMemberById(){

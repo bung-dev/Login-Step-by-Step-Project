@@ -1,9 +1,12 @@
-package project.member.domain;
+package project.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import project.member.domain.Member;
+import project.member.domain.MemberStatus;
 import project.member.domain.dto.MemberRequest;
 import project.member.domain.dto.MemberResponse;
+import project.member.repository.InMemoryMemberRepository;
 import project.member.web.exception.CustomException;
 import project.member.web.exception.ErrorCode;
 
@@ -14,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepository memberRepository;
+    private final InMemoryMemberRepository inMemoryMemberRepository;
 
     public MemberResponse createMember(MemberRequest memberRequest) {
         Member member = Member.builder()
@@ -23,13 +26,13 @@ public class MemberService {
                 .name(memberRequest.name())
                 .build();
 
-        Member saveMember = memberRepository.save(member);
+        Member saveMember = inMemoryMemberRepository.save(member);
 
         return MemberResponse.from(saveMember);
     }
 
     public MemberResponse getMemberById(Long id){
-        Member getMember = memberRepository.findById(id);
+        Member getMember = inMemoryMemberRepository.findById(id);
         if (getMember == null) {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         } //findById를 Optional이면 orElseThorw로 리팩토링이 가능, JPA로 리팩토링하며 구현예정
@@ -39,7 +42,7 @@ public class MemberService {
     }
 
     public MemberResponse login(String loginId, String password){
-        return memberRepository.findByLoginId(loginId)
+        return inMemoryMemberRepository.findByLoginId(loginId)
                 .filter(member -> !(member.getStatus() == MemberStatus.DELETED))
                 .filter(member -> member.getPassword().equals(password))
                 .map(MemberResponse::from)
@@ -47,19 +50,19 @@ public class MemberService {
     }
 
     public List<MemberResponse> getAllMembers(){
-        return memberRepository.findAll()
+        return inMemoryMemberRepository.findAll()
                 .stream()
                 .map(MemberResponse::from)
                 .toList();
     }
 
     public void deleteMember(Long id){
-        Member member = memberRepository.findById(id);
+        Member member = inMemoryMemberRepository.findById(id);
         if (member == null) {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
             //findById를 Optional이면 orElseThorw로 리팩토링이 가능, JPA로 리팩토링하며 구현예정
         } else {
-            memberRepository.deleteMemberById(id);
+            inMemoryMemberRepository.deleteMemberById(id);
         }
     }
 }

@@ -3,20 +3,20 @@ package project.member;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import project.member.domain.Member;
-import project.member.domain.MemberRepository;
+import project.member.repository.InMemoryMemberRepository;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-class MemberRepositoryTest {
+class InMemoryMemberRepositoryTest {
 
-    MemberRepository memberRepository = new MemberRepository();
+    InMemoryMemberRepository inMemoryMemberRepository = new InMemoryMemberRepository();
 
 
     @AfterEach
     void afterEach(){
-        memberRepository.clear();
+        inMemoryMemberRepository.clear();
     }
 
     @Test
@@ -28,9 +28,9 @@ class MemberRepositoryTest {
                 .name("test1")
                 .build();
         //when
-        Member member = memberRepository.save(member1);
+        Member member = inMemoryMemberRepository.save(member1);
         //then
-        Member findMember = memberRepository.findById(member.getId());
+        Member findMember = inMemoryMemberRepository.findById(member.getId());
         assertThat(findMember).isEqualTo(member);
     }
 
@@ -48,10 +48,10 @@ class MemberRepositoryTest {
                 .name("test2")
                 .build();
 
-        memberRepository.save(member1);
-        memberRepository.save(member2);
+        inMemoryMemberRepository.save(member1);
+        inMemoryMemberRepository.save(member2);
         //when
-        List<Member> all = memberRepository.findAll();
+        List<Member> all = inMemoryMemberRepository.findAll();
 
         //then
         assertThat(all.size()).isEqualTo(2);
@@ -68,12 +68,12 @@ class MemberRepositoryTest {
                 .name("test1")
                 .build();
 
-        Member member = memberRepository.save(member1);
+        Member member = inMemoryMemberRepository.save(member1);
         //when
         System.out.println(member.toString());
-        memberRepository.deleteMemberById(member.getId());
+        inMemoryMemberRepository.deleteMemberById(member.getId());
 
         //then
-        assertThat(memberRepository.findById(member.getId())).isNull();
+        assertThat(inMemoryMemberRepository.findById(member.getId())).isNull();
     }
 }

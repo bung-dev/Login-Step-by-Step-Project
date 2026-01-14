@@ -9,7 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.member.domain.MemberService;
+import project.member.service.MemberService;
 import project.member.domain.dto.MemberRequest;
 import project.member.domain.dto.MemberResponse;
 import project.member.web.SessionConst;
