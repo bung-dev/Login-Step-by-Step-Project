@@ -19,12 +19,8 @@ public class InMemoryMemberService {
 
     private final InMemoryMemberRepository inMemoryMemberRepository;
 
-    public MemberResponse createMember(MemberRequest memberRequest) {
-        Member member = Member.builder()
-                .loginId(memberRequest.loginId())
-                .password(memberRequest.password())
-                .name(memberRequest.name())
-                .build();
+    public MemberResponse createMember(MemberRequest req) {
+        Member member = Member.create(req.loginId(), req.name(), req.password());
 
         Member saveMember = inMemoryMemberRepository.save(member);
 
@@ -38,7 +34,7 @@ public class InMemoryMemberService {
         } //findById를 Optional이면 orElseThorw로 리팩토링이 가능, JPA로 리팩토링하며 구현예정
 
         return new MemberResponse(getMember.getLoginId(),
-                getMember.getName());
+                getMember.getName(),getMember.getRole());
     }
 
     public MemberResponse login(String loginId, String password){
