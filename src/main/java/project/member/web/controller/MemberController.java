@@ -9,7 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.member.service.MemberService;
+import project.member.service.InMemoryMemberService;
 import project.member.domain.dto.MemberRequest;
 import project.member.domain.dto.MemberResponse;
 import project.member.web.SessionConst;
@@ -23,26 +23,26 @@ import java.util.List;
 @RequestMapping("/members")
 public class MemberController {
 
-    private final MemberService memberService;
+    private final InMemoryMemberService inMemoryMemberService;
 
     @GetMapping("/{id}")
     public ResponseEntity<MemberResponse> getMemberById(@PathVariable Long id) {
-        return ResponseEntity.ok(memberService.getMemberById(id));
+        return ResponseEntity.ok(inMemoryMemberService.getMemberById(id));
     }
 
     @PostMapping
     public ResponseEntity<MemberResponse> createMembers(@Valid @RequestBody MemberRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.createMember(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(inMemoryMemberService.createMember(request));
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<MemberResponse>> getAllMembers(){
-        return ResponseEntity.ok(memberService.getAllMembers());
+        return ResponseEntity.ok(inMemoryMemberService.getAllMembers());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMembers(@PathVariable Long id){
-        memberService.deleteMember(id);
+        inMemoryMemberService.deleteMember(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -51,7 +51,7 @@ public class MemberController {
     public ResponseEntity<MemberResponse> loginSession(@RequestParam String loginId,
                                                        @RequestParam String password,
                                                        HttpServletRequest request){
-        MemberResponse login = memberService.login(loginId, password);
+        MemberResponse login = inMemoryMemberService.login(loginId, password);
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute(SessionConst.LOGIN_MEMBER, login);
 

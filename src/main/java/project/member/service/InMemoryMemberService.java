@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class InMemoryMemberService {
 
     private final InMemoryMemberRepository inMemoryMemberRepository;
 
