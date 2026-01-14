@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
-public class MemberController {
+public class InMemoryMemberController {
 
     private final InMemoryMemberService inMemoryMemberService;
 
