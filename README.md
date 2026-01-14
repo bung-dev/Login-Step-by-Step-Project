@@ -1,5 +1,5 @@
 # Login-Step-by-Step-Project
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/bbaf10c2-26ca-4ebc-a5c2-66a67b7b8289" />
+<img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/bbaf10c2-26ca-4ebc-a5c2-66a67b7b8289" />
 
 
 ## Status (Last updated: 2026-01-14)
