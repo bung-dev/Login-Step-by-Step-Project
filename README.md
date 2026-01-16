@@ -6,10 +6,15 @@
 - ✅ Cookie 로그인 구현
 - ✅ Session 로그인 구현
 - ✅ Interceptor / ArgumentResolver 기반 로그인 주입(@Login) + 예외 공통 처리 + Bean Validation
+- ✅ JPA Refactoring 완료
+  - Entity/Repository 중심으로 영속 계층 정리
+  - 트랜잭션 경계 정리(@Transactional)
 
-- 🚧 **JPA Refactoring + Spring Security 적용 (동시 진행)**
-  - [ ] (JPA) Entity/Repository 중심으로 영속 계층 정리
-  - [ ] (JPA) 트랜잭션 경계 정리(@Transactional) + 테스트 추가
+✅ Soft Delete(논리 삭제) 적용
+  - delete 시점에 물리 삭제 대신 UPDATE로 처리
+  - 기본 조회에서 삭제 데이터 제외(전역 필터)
+
+- 🚧 **Spring Security 적용**
   - [ ] (Security) SecurityFilterChain 기반 인증/인가 구성
   - [ ] (Security) 권한 정책 정리(permitAll / role 기반 접근제어)
   - [ ] (Security) PasswordEncoder(BCrypt) 적용 + 예외 처리(EntryPoint/DeniedHandler)
@@ -79,14 +84,49 @@
 → “가벼운 요청”과 “중요한 요청”을 분리
 
 ---
+## 4. JPA Refactoring + Soft Delete
 
-## Current Focus (WIP)
-**JPA 리팩토링 + Spring Security 적용을 병행 중입니다.**
-- [ ] JPA 전환(Repository/Tx) + 테스트
-- [ ] SecurityFilterChain/권한정책/예외처리 + BCrypt
+### 4-1. JPA Refactoring 
+
+#### 왜 바꿨는가
+- (이전) 간단한 저장 방식(메모리/Map 기반)은 학습에는 좋지만, 기능이 늘어나면 조회 조건/동시성/트랜잭션 같은 운영 이슈를 다루기 어렵다
+- (목표) “데이터는 DB, 비즈니스는 서비스, 접근은 Repository”로 책임을 분리해 확장 가능한 형태로 정리한다
+
+#### 무엇을 바꿨는가
+- Entity 중심으로 도메인 모델을 정리하고, Repository(JpaRepository)로 데이터 접근을 일원화한다
+- Service 계층에서 트랜잭션 경계를 명확히 한다
+  - 쓰기 로직: @Transactional
+  - 조회 로직: @Transactional(readOnly = true)
+- 리팩토링 이후 동작이 깨지지 않도록 테스트를 추가한다
+
+#### 얻은 것 / 트레이드오프
+- 장점: 조회/저장 로직이 표준화되고, “수정/삭제/조회”가 기능 단위로 예측 가능해진다
+- 단점: 영속성 컨텍스트/지연 로딩/트랜잭션 범위 같은 JPA 특성을 이해하고 설계에 반영해야 한다
+
 
 ---
 
+### 4-2. Soft Delete(논리 삭제) 적용 
+
+#### 왜 넣었는가
+- 운영에서는 “실수로 삭제”가 빈번하고, 삭제 이력/복구 요구가 생긴다
+- 물리 삭제는 FK/이력(Audit)/장애 대응 관점에서 리스크가 커진다
+
+#### 무엇을 했는가(핵심 아이디어)
+- delete 요청이 와도 실제 DELETE 대신 deletedAt 값을 업데이트한다
+- 기본 조회에서는 삭제 데이터가 자동으로 제외되도록 “전역 조건”을 적용한다
+- 관리자/복구처럼 “삭제 포함 조회”가 필요한 케이스는 별도 쿼리로 분리한다
+
+## Current Focus (WIP)
+
+Spring Security 적용을 진행 중이다.
+
+- SecurityFilterChain 구성 + 인증/인가 흐름 정리
+- 권한 정책(permitAll / role 기반 접근 제어)
+- BCrypt PasswordEncoder 적용
+- 인증/인가 예외 처리(EntryPoint / DeniedHandler)
+
+이후 JWT(Access/Refresh) → OAuth2 Login 연동까지 확장 예정
 
 ## 📌 Commit Convention
 
@@ -99,4 +139,14 @@
 | ♻️ | refactor | 구조 개선 |
 | ✅ | test | 테스트 코드 |
 | 🔧 | chore | 설정 및 기타 작업 |
+
+## Tech Stack
+
+- Language: Java
+- Framework: Spring Boot
+- Persistence: Spring Data JPA
+- Security: Spring Security (WIP), JWT (Planned), OAuth2 (Planned)
+- Database: MySQL, H2
+- Build Tool: Gradle
+- Test: JUnit
 
