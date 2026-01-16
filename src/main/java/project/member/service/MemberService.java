@@ -62,6 +62,9 @@ public class MemberService {
 
     @Transactional
     public void delete(Long id){
-        memberRepository.deleteById(id); //소프트 딜리트 추가 예정
+        Member member = memberRepository.findById(id)
+                .orElseThrow(ErrorCode.MEMBER_NOT_FOUND::exception);
+
+        member.delete();
     }
 }
