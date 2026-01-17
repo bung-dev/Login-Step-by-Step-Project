@@ -1,11 +1,11 @@
-package project.member.service;
+package project.legacy.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.member.domain.Member;
 import project.member.domain.dto.MemberRequest;
 import project.member.domain.dto.MemberResponse;
-import project.member.repository.InMemoryMemberRepository;
+import project.legacy.repositroy.InMemoryMemberRepository;
 import project.member.web.exception.CustomException;
 import project.member.web.exception.ErrorCode;
 
@@ -38,7 +38,6 @@ public class InMemoryMemberService {
 
     public MemberResponse login(String loginId, String password){
         return inMemoryMemberRepository.findByLoginId(loginId)
-                .filter(member -> !(member.getStatus() == MemberStatus.DELETED))
                 .filter(member -> member.getPassword().equals(password))
                 .map(MemberResponse::from)
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_CREDENTIALS));

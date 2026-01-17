@@ -1,9 +1,9 @@
-package project.member.Service;
+package project.member.legacy.Service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import project.member.repository.InMemoryMemberRepository;
-import project.member.service.InMemoryMemberService;
+import project.legacy.repositroy.InMemoryMemberRepository;
+import project.legacy.service.InMemoryMemberService;
 import project.member.domain.dto.MemberRequest;
 import project.member.domain.dto.MemberResponse;
 

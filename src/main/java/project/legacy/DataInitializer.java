@@ -1,4 +1,4 @@
-package project;
+package project.legacy;
 
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -6,7 +6,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import project.member.domain.dto.MemberRequest;
-import project.member.service.InMemoryMemberService;
+import project.legacy.service.InMemoryMemberService;
 
 @Component
 @RequiredArgsConstructor

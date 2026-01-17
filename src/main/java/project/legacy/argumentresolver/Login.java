@@ -1,4 +1,4 @@
-package project.member.web.argumentresolver;
+package project.legacy.argumentresolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

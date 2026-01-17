@@ -1,4 +1,4 @@
-package project.member.web.controller;
+package project.legacy.controller;
 
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,10 +9,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.member.service.InMemoryMemberService;
+import project.legacy.service.InMemoryMemberService;
 import project.member.domain.dto.MemberRequest;
 import project.member.domain.dto.MemberResponse;
-import project.member.web.SessionConst;
+import project.legacy.SessionConst;
 
 import java.util.List;
 

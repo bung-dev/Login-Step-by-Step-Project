@@ -1,8 +1,9 @@
-package project.member.repository;
+package project.member.legacy.repository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import project.member.domain.Member;
+import project.legacy.repositroy.InMemoryMemberRepository;
 
 import java.util.List;
 

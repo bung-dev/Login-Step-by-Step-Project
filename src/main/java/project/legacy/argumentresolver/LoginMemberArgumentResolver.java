@@ -1,4 +1,4 @@
-package project.member.web.argumentresolver;
+package project.legacy.argumentresolver;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -9,7 +9,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import project.member.domain.dto.MemberResponse;
-import project.member.web.SessionConst;
+import project.legacy.SessionConst;
 
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 

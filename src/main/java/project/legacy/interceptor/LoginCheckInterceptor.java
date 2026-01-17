@@ -1,13 +1,12 @@
-package project.member.web.interceptor;
+package project.legacy.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.log4j.Log4j2;
 import org.jspecify.annotations.NonNull;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
-import project.member.web.SessionConst;
+import project.legacy.SessionConst;
 import project.member.web.exception.CustomException;
 import project.member.web.exception.ErrorCode;
 
