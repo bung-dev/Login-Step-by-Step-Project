@@ -39,7 +39,8 @@ public class Member {
         this.loginId = loginId;
         this.name = name;
         this.password = password;
-        this.role = Role.ROLE_Member;
+        this.role = Role.ROLE_MEMBER;
+        this.deletedAt = false;
     }
 
     public static Member create(String loginId, String name, String password) {
