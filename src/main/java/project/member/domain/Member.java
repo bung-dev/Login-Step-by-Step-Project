@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 @EntityListeners(AuditingEntityListener.class)
 public class Member {
 
@@ -32,7 +31,7 @@ public class Member {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    private Boolean deletedAt;
+    private LocalDateTime deletedAt;
 
     @Builder(access = AccessLevel.PROTECTED)
     private Member(String loginId, String name, String password) {
@@ -40,7 +39,6 @@ public class Member {
         this.name = name;
         this.password = password;
         this.role = Role.ROLE_MEMBER;
-        this.deletedAt = false;
     }
 
     public static Member create(String loginId, String name, String password) {
@@ -51,7 +49,12 @@ public class Member {
                 .build();
     }
 
-    public boolean delete() {
+    public void softDelete(){
+        if(this.deletedAt != null) return;
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public boolean isDelete() {
         return this.deletedAt != null;
     }
 

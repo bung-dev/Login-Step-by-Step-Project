@@ -65,6 +65,6 @@ public class MemberService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(ErrorCode.MEMBER_NOT_FOUND::exception);
 
-        member.delete();
+        member.softDelete();
     }
 }
