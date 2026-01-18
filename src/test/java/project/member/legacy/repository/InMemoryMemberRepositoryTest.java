@@ -58,6 +58,6 @@ class InMemoryMemberRepositoryTest {
 
         //then
         Member deletedMember = inMemoryMemberRepository.findById(member.getId());
-        assertThat(deletedMember.getStatus()).isEqualTo(MemberStatus.DELETED);
+        assertThat(deletedMember.getName()).isEqualTo("deletedName");
     }
 }
