@@ -73,4 +73,20 @@ public class MemberServiceTest {
         assertThat(updateMember.name()).isEqualTo(update.name());
         assertThat(updateMember.loginId()).isEqualTo(update.loginId());
     }
+
+    @Test
+    void delete() {
+        //given
+        MemberRequest memberRequest = new MemberRequest("testtest1", "testtest1!", "테스트1");
+        MemberResponse memberResponse = memberService.join(memberRequest);
+        //when
+        Member member = memberRepository.findByLoginId(memberResponse.loginId())
+                .orElseThrow(ErrorCode.MEMBER_NOT_FOUND::exception);
+        memberService.delete(1L);
+        //then
+        assertThatThrownBy(() -> memberService.get(member.getId()))
+                .isInstanceOf(CustomException.class)
+                .extracting(ex -> ((CustomException) ex).getErrorCode())
+                .isEqualTo(ErrorCode.MEMBER_NOT_FOUND);
+    }
 }
