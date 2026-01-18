@@ -54,5 +54,23 @@ public class MemberServiceTest {
         assertThat(listMember.get(1).name()).isEqualTo(memberRequest2.name());
     }
 
+    @Test
+    void update() {
+        //given
+        MemberRequest memberRequest = new MemberRequest("testtest1", "testtest1!", "테스트1");
+        MemberResponse memberResponse = memberService.join(memberRequest);
 
+        MemberRequest updateRequest = new MemberRequest("testUpdate1", "testUpdate1!", "테스트업데이트1");
+
+        //when
+        Member member = memberRepository.findByLoginId(memberResponse.loginId())
+                .orElseThrow(ErrorCode.MEMBER_NOT_FOUND::exception);
+
+        MemberResponse update = memberService.update(member.getId(), updateRequest);
+
+        //then
+        MemberResponse updateMember = memberService.get(member.getId());
+        assertThat(updateMember.name()).isEqualTo(update.name());
+        assertThat(updateMember.loginId()).isEqualTo(update.loginId());
+    }
 }
