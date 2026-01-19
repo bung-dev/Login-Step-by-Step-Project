@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import project.member.domain.dto.MemberRequest;
 import project.member.domain.dto.MemberResponse;
+import project.member.domain.dto.PasswordChangeRequest;
 import project.member.security.CustomMemberDetails;
 import project.member.service.MemberService;
 
@@ -19,8 +20,9 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping
-    public ResponseEntity<MemberResponse> get(@AuthenticationPrincipal CustomMemberDetails member) {
+
+    @GetMapping("/me")
+    public ResponseEntity<MemberResponse> me(@AuthenticationPrincipal CustomMemberDetails member) {
         return ResponseEntity.ok(memberService.get(member.getMemberId()));
     }
 
@@ -34,15 +36,15 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.join(request));
     }
 
-    @PutMapping
-    public ResponseEntity<MemberResponse> update(@AuthenticationPrincipal CustomMemberDetails member,
+    @PatchMapping("/me")
+    public ResponseEntity<MemberResponse> updateMe(@AuthenticationPrincipal CustomMemberDetails member,
                                                  @RequestBody MemberRequest request){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(memberService.update(member.getMemberId(), request));
     }
 
-    @DeleteMapping
-    public ResponseEntity<MemberResponse> delete(@AuthenticationPrincipal CustomMemberDetails member){
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal CustomMemberDetails member){
         memberService.delete(member.getMemberId());
         return ResponseEntity.noContent().build();
     }
