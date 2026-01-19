@@ -67,4 +67,15 @@ public class MemberService {
 
         member.softDelete();
     }
+
+    @Transactional
+    public void changePassword(Long id , PasswordChangeRequest req){
+        Member member = memberRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(ErrorCode.MEMBER_NOT_FOUND::exception);
+
+        if (!passwordEncoder.matches(req.currentPassword(),  member.getPassword()))
+            throw ErrorCode.INVALID_CREDENTIALS.exception();
+
+        member.changePassword(passwordEncoder.encode(req.newPassword()));
+    }
 }
