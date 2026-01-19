@@ -50,6 +50,6 @@ public class CustomMemberDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return member.getDeletedAt() == null;
     }
 }
