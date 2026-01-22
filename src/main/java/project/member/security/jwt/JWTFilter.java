@@ -39,9 +39,7 @@ public class JWTFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
-        log.info("header:{}",header);
         if (header == null || !header.startsWith("Bearer ")) {
-            log.error("header not found");
             filterChain.doFilter(request, response);
             return;
         }
