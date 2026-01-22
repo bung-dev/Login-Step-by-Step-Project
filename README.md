@@ -2,26 +2,21 @@
 <img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/bbaf10c2-26ca-4ebc-a5c2-66a67b7b8289" />
 
 
-## Status (Last updated: 2026-01-17)
+## Status (Last updated: 2026-01-21)
+
 - ✅ Cookie 로그인 구현
 - ✅ Session 로그인 구현
 - ✅ Interceptor / ArgumentResolver 기반 로그인 주입(@Login) + 예외 공통 처리 + Bean Validation
 - ✅ JPA Refactoring 완료
-  - Entity/Repository 중심으로 영속 계층 정리
-  - 트랜잭션 경계 정리(@Transactional)
-  - 
 - ✅ Soft Delete(논리 삭제) 적용
-  - delete 시점에 물리 삭제 대신 UPDATE로 처리
-  - 기본 조회에서 삭제 데이터 제외(전역 필터)
-  - 
-- ✅ Legacy 코드 격리 (member 스캔 범위로 legacy 제외)
-- ✅ ErrorResponse.of(...) 팩토리 메서드
+- ✅ Legacy 코드 격리(학습 단계 구현 보관 + 현재 런타임 제외)
+- ✅ ErrorResponse.of(...) 도입(에러 응답 생성 통일)
 - ✅ Spring Security 401/403 예외 JSON 응답 처리(EntryPoint/DeniedHandler)
-- ✅ CustomUserDetails/Service 구현 + @AuthenticationPrincipal 기반 구현
+- ✅ CustomUserDetails/Service 구현 + @AuthenticationPrincipal 기반 “내 정보” 처리
+- ✅ JWT 인증(Access Token only) 적용
+- ⏳ Refresh Token 구현 예정
+- ⏳ OAuth2 Login + JWT 통합 예정
 
-- ⏳ 권한 정책 정리(permitAll / role 기반 접근 제어) 마무리
-- ⏳ JWT 적용 (Access/Refresh, 재발급, 로그아웃)
-- ⏳ OAuth2 Login + JWT 통합
 ---
 
 ## 1. Cookie 로그인
@@ -137,14 +132,18 @@
   > 인증 주체 식별은 loginId/email 대신 PK(memberId)로 통일했다.
   > 외부 식별자는 변경/중복/정규화 이슈가 발생하기 쉬워 운영에서 정합성을 흔들 수 있기 때문이다.
 
+### 5-4. JWT (Access Token only) - Spring Security 처리 흐름
+- LoginFilter가 로그인 요청을 처리하고, 인증 성공 시 JWTUtil로 Access Token을 발급한다.
+- 이후 요청은 JWTFilter가 Authorization: Bearer <token>을 추출해 JWTUtil로 검증한다.
+- 토큰이 유효하면 CustomMemberDetailsService/CustomMemberDetails 기반으로 Authentication을 만들어 SecurityContext에 저장한다.
+
 
 ## Current Focus (WIP)
 
-- 연결 후 동작 검증 및 예외 응답(JSON) 포맷 점검
-- 권한 정책 확정 (예: /members/all은 ADMIN 전용)
+- Refresh Token 설계/구현(재발급 플로우 포함)
+- OAuth2 Login 적용 후 JWT와 통합
 
-다음 단계로 JWT(Access/Refresh) 발급/재발급/로그아웃을 구현한 뒤,
-OAuth2 Login + JWT 통합까지 확장할 예정이다.
+---
 
 
 ## 📌 Commit Convention
