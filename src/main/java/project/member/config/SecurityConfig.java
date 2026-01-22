@@ -16,8 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import project.member.security.handler.RestAccessDeniedHandler;
 import project.member.security.handler.RestAuthenticationEntryPoint;
 import project.member.security.jwt.JWTFilter;
-import project.member.security.jwt.JWTUtil;
-import project.member.security.jwt.LoginFilter;
 
 
 @Configuration
@@ -27,8 +25,6 @@ public class SecurityConfig {
 
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final RestAccessDeniedHandler restAccessDeniedHandler;
-    private final AuthenticationConfiguration authenticationConfiguration;
-    private final JWTUtil jwtUtil;
     private final JWTFilter jwtFilter;
 
     @Bean
@@ -57,7 +53,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.GET,"/members/all").hasRole("ADMIN")
                         .anyRequest().authenticated())
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .exceptionHandling(ex -> ex
