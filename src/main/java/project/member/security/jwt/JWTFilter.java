@@ -24,6 +24,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static project.member.CommonToken.*;
+
 @Log4j2
 @Component
 @RequiredArgsConstructor
@@ -47,6 +49,12 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = header.substring(7);
         if (token.isEmpty()) {
             filterChain.doFilter(request, response);
+            return;
+        }
+
+        String category = jwtUtil.getCategory(token);
+        if (!category.equals(JWT_ACCESS_TOKEN_NAME)){
+            writeError(response,ErrorCode.INVALID_TOKEN_CATEGORY);
             return;
         }
 
