@@ -32,4 +32,14 @@ public class AuthController {
                 .body(token);
     }
 
+    @PostMapping("/reissue")
+    public ResponseEntity<TokenResponse> reissue(HttpServletRequest request,HttpServletResponse response){
+        String refresh = cookieUtil.readCookie(request);
+        TokenResponse newToken = authService.reissue(refresh);
+        String cookie = cookieUtil.createCookie(newToken.refreshToken());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + newToken.accessToken())
+                .header(HttpHeaders.SET_COOKIE, cookie)
+                .body(newToken);
+    }
 }
