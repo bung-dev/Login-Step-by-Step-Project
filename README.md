@@ -146,7 +146,7 @@
 - 컨트롤러는 서비스만 의존하도록 구성해(Controller는 I/O, Service는 로직) 책임을 분리했다.
 - 토큰 스펙(만료/헤더/이름)은 CommonToken으로 상수화해 일관되게 관리한다.
 
-- ### 5-6. Refresh Token 구현(DB 저장 + 쿠키 + 재발급)
+### 5-6. Refresh Token 구현(DB 저장 + 쿠키 + 재발급)
 - Refresh Token은 DB에 저장하고, 로그인 시 Access/Refresh를 발급한 뒤 기존 토큰은 deleteAllByLoginId로 정리(계정당 1개 정책)했다.
 - Refresh는 `CookieUtil`로 쿠키를 내려주고, Access는 Authorization: Bearer <token> 헤더로 전달한다.
 - /reissue는 쿠키의 Refresh를 검증 후 새 Access/Refresh로 rotating 후, DB refresh/expiration 갱신 + 새 쿠키/Authorization 헤더로 응답한다.
