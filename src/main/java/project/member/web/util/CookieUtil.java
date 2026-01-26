@@ -24,13 +24,24 @@ public class CookieUtil {
     }
 
     public String readCookie(HttpServletRequest request){
-        if (request.getCookies() == null) {
-            throw ErrorCode.REFRESH_TOKEN_MISSING.exception();
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return null;
         }
-        return Arrays.stream(request.getCookies())
+        return Arrays.stream(cookies)
                 .filter(cookie -> JWT_REFRESH_TOKEN_NAME.equals(cookie.getName()))
                 .map(Cookie::getValue)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public String removeCookie(){
+        return ResponseCookie.from(JWT_REFRESH_TOKEN_NAME,"")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .build()
+                .toString();
     }
 }
