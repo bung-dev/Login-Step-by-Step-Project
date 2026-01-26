@@ -9,6 +9,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JWTUtil {
@@ -37,6 +38,7 @@ public class JWTUtil {
 
     public String createToken(String loginId, String  role, String category, long expired) {
         return Jwts.builder()
+                .claim("id", UUID.randomUUID().toString())
                 .claim("loginId", loginId)
                 .claim("role", role)
                 .claim("category", category)
