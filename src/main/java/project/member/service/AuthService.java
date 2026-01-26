@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import project.member.domain.Refresh;
 import project.member.domain.dto.LoginRequest;
 import project.member.domain.dto.TokenResponse;
@@ -25,6 +26,7 @@ public class AuthService {
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
 
+    @Transactional
     public TokenResponse login(LoginRequest request) {
         try{
             Authentication auth = authenticationManager.authenticate(
@@ -50,6 +52,7 @@ public class AuthService {
         }
     }
 
+    @Transactional
     public TokenResponse reissue(String refreshToken){
         Refresh saveRefresh = refreshRepository.findByRefresh(refreshToken)
                 .orElseThrow(ErrorCode.REFRESH_TOKEN_INVALID::exception);
