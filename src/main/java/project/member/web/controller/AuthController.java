@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import project.member.domain.dto.LoginRequest;
 import project.member.domain.dto.TokenResponse;
 import project.member.service.AuthService;
+import project.member.web.exception.ErrorCode;
 import project.member.web.util.CookieUtil;
 
 @RestController
@@ -35,11 +36,23 @@ public class AuthController {
     @PostMapping("/reissue")
     public ResponseEntity<TokenResponse> reissue(HttpServletRequest request,HttpServletResponse response){
         String refresh = cookieUtil.readCookie(request);
+        if(refresh == null){
+            throw ErrorCode.REFRESH_TOKEN_MISSING.exception();
+        }
         TokenResponse newToken = authService.reissue(refresh);
         String cookie = cookieUtil.createCookie(newToken.refreshToken());
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + newToken.accessToken())
                 .header(HttpHeaders.SET_COOKIE, cookie)
                 .body(newToken);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request,HttpServletResponse response){
+        String cookie = cookieUtil.readCookie(request);
+        authService.logout(cookie);
+
+        response.setHeader(HttpHeaders.SET_COOKIE, cookieUtil.removeCookie());
+        return ResponseEntity.noContent().build();
     }
 }
