@@ -2,7 +2,7 @@
 <img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/bbaf10c2-26ca-4ebc-a5c2-66a67b7b8289" />
 
 
-## Status (Last updated: 2026-01-22)
+## Status (Last updated: 2026-01-27)
 
 - ✅ Cookie 로그인 구현
 - ✅ Session 로그인 구현
@@ -16,8 +16,7 @@
 - ✅ JWT 인증(Access Token only) 적용
   - ✅ LoginFilter 제거 → Controller/Service 기반 토큰 발급으로 전환
 - ✅ Refresh Token 구현 완료(DB 저장 + 쿠키 전달 + 재발급)
-- ⏳ OAuth2 Login + JWT 통합 예정
-
+- ✅ OAuth2(Google) 로그인 + JWT 통합 완료
 
 ---
 
@@ -153,13 +152,20 @@
 
 > Troubleshooting: 계정당 1개 Refresh 정책(`deleteAllByLoginId`)으로 다중 기기 로그인 시 기존 토큰이 무효화될 수 있음 / 만료시간(expiration) 단위(초·밀리초) 불일치에 대한 오류가 발생할 수 있으니 문서화 하여 디버깅에 용이하도록 설계
 
-  
-## Current Focus (WIP)
+### 로그아웃(멱등)
+- `POST /logout`
+- 쿠키가 없거나 DB에 없어도 **204**로 멱등 처리
+- 처리: refresh 쿠키 읽기(null 가능) → DB 삭제 시도 → 만료 쿠키(Set-Cookie Max-Age=0) 내려줌
 
-- OAuth2 Login 적용
-- OAuth2 Login + JWT(Access/Refresh) 통합
+## 6. OAuth2(Google) 통합
 
----
+### 6-1. OAuth2 로그인 흐름
+- 로그인 시작: /oauth2/authorization/google
+- 성공 시 SuccessHandler에서 토큰 발급 및 쿠키 세팅 수행
+
+### 6-2. OAuth2 사용자 매핑
+- provider별 응답을 추상화해서 loginId/email 등을 표준화
+- OAuth2User를 프로젝트 사용자 모델에 맞게 감싸 CustomOauth2MemberDetails 인증 주체 일관성 유지
 
 
 ## 📌 Commit Convention
