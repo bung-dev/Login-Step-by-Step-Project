@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8" />
+    <title>Index</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; }
+        .btn { display:inline-block; padding:12px 16px; border:1px solid #ddd; border-radius:10px; text-decoration:none; cursor:pointer; background:#fff; }
+        .row { display:flex; gap:12px; align-items:center; }
+    </style>
+</head>
+<body>
+<h1>login 프로젝트</h1>
+<p>구글 소셜 로그인 테스트</p>
+
+<!-- ✅ 로그인 안 된 경우: 로그인 버튼 -->
+<div sec:authorize="isAnonymous()">
+    <a class="btn" href="/oauth2/authorization/google">Google로 로그인</a>
+</div>
+
+<!-- ✅ 로그인 된 경우: 로그아웃 버튼 -->
+<div sec:authorize="isAuthenticated()">
+    <div class="row">
+    <span>
+      로그인됨:
+      <b sec:authentication="name"></b>
+    </span>
+
+        <button class="btn" type="button" onclick="logout()">로그아웃</button>
+    </div>
+</div>
+
+<script>
+    async function logout() {
+      try {
+        // ✅ refresh 쿠키 기반 로그아웃 (Authorization 없어도 됨)
+        const res = await fetch("/logout", {
+          method: "POST",
+          credentials: "same-origin" // 쿠키 포함
+        });
+
+        // 멱등이면 204가 정상
+        if (res.status === 204 || res.ok) {
+          // (선택) localStorage 등에 accessToken 저장했다면 여기서 제거
+          // localStorage.removeItem("accessToken");
+
+          window.location.reload();
+          return;
+        }
+
+        // 실패해도 화면 갱신(쿠키 만료가 내려가면 이미 로그아웃 상태일 수 있음)
+        window.location.reload();
+      } catch (e) {
+        window.location.reload();
+      }
+    }
+</script>
+
+</body>
+</html>
