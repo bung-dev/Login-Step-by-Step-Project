@@ -31,6 +31,11 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -40,11 +45,23 @@ public class Member {
     private LocalDateTime deletedAt;
 
     @Builder
-    public Member(String loginId, String name, String password) {
+    public Member(String loginId, String name, String password, AuthProvider provider, String providerId) {
         this.loginId = loginId;
         this.name = name;
         this.password = password;
         this.role = Role.ROLE_MEMBER;
+        this.provider = provider;
+        this.providerId = providerId;
+    }
+
+    public static Member OAuth2Create (String loginId, String name, String password, AuthProvider provider, String providerId) {
+        return Member.builder()
+                .loginId(loginId)
+                .name(name)
+                .password(password)
+                .provider(provider)
+                .providerId(providerId)
+                .build();
     }
 
     public void softDelete(){
